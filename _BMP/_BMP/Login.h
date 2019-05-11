@@ -5,6 +5,8 @@
 #include"resource.h"
 #include <string>
 #include <openssl/md5.h>
+#include <my_global.h>
+#include <mysql.h>
 using namespace std;
 
 class user {

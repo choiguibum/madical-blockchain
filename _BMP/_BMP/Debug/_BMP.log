@@ -1,9 +1,6 @@
 ﻿  Login.cpp
 c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(17): warning C4005: '_WINSOCKAPI_': 매크로 재정의
   c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(17): note: 명령줄 인수: '_WINSOCKAPI_'의 이전 정의를 참조하십시오.
-c:\users\rnlqj\desktop\madical-blockchain-master\_bmp\_bmp\login.cpp(77): warning C4101: 'len' :참조되지 않은 지역 변수입니다.
-c:\users\rnlqj\desktop\madical-blockchain-master\_bmp\_bmp\login.cpp(78): warning C4101: 'buf' :참조되지 않은 지역 변수입니다.
-c:\users\rnlqj\desktop\madical-blockchain-master\_bmp\_bmp\login.cpp(102): warning C4101: 'sql_row' :참조되지 않은 지역 변수입니다.
-c:\users\rnlqj\desktop\madical-blockchain-master\_bmp\_bmp\login.cpp(101): warning C4101: 'sql_result' :참조되지 않은 지역 변수입니다.
-  _BMP.vcxproj -> C:\Users\rnlqj\Desktop\madical-blockchain-master\_BMP\Debug\_BMP.exe
-  _BMP.vcxproj -> C:\Users\rnlqj\Desktop\madical-blockchain-master\_BMP\Debug\_BMP.pdb (Full PDB)
+c:\users\start\onedrive\바탕 화면\3조\_bmp\_bmp\login.cpp(25): warning C4101: 'test' :참조되지 않은 지역 변수입니다.
+  _BMP.vcxproj -> C:\Users\start\OneDrive\바탕 화면\3조\_BMP\Debug\_BMP.exe
+  _BMP.vcxproj -> C:\Users\start\OneDrive\바탕 화면\3조\_BMP\Debug\_BMP.pdb (Full PDB)

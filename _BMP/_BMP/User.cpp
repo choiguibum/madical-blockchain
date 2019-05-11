@@ -1,6 +1,7 @@
 #include "User.h"
 
 extern HINSTANCE g_hInst;
+extern MYSQL mysql;
 extern TCHAR *MedicalDepartment[5];
 HWND uTab1,uList1,uList2;
 HWND hStatic1,hStatic2;
@@ -60,6 +61,7 @@ LRESULT CALLBACK WndUserProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 		TextOut(hdc, 30, 100, TEXT("¿Ã∏ß"), 4);
 		return 0;
 	case WM_DESTROY:
+		mysql_close(&mysql);
 		PostQuitMessage(0);
 		return 0;
 	}

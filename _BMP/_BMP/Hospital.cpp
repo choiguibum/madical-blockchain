@@ -1,12 +1,13 @@
 #include "Hospital.h"
 
 extern HINSTANCE g_hInst;
+extern MYSQL mysql;
 extern TCHAR *MedicalDepartment[5];
 HWND hTab1, hList1, hList2,hList3;
 HWND hS1, hS2;
 HWND fedit;
 HWND fbu,wbu;
-
+//user table => 이름 / 아이디 / 암호화 비밀번호 / 생년월일 / 성별/
 LRESULT CALLBACK WndHospitalProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
 	HDC hdc;
 	PAINTSTRUCT ps;
@@ -68,6 +69,7 @@ LRESULT CALLBACK WndHospitalProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM
 		TextOut(hdc, 30, 100, TEXT("이름"), 4);
 		return 0;
 	case WM_DESTROY:
+		mysql_close(&mysql);
 		PostQuitMessage(0);
 		return 0;
 	}
