@@ -18,7 +18,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszDcm
 
 	
 	if (DialogBox(g_hInst, MAKEINTRESOURCE(IDD_LOGIN), HWND_DESKTOP, LoginProc) == IDC_BEXIT) exit(0);
-	UH = 2;
 	WndClass.cbClsExtra = 0;
 	WndClass.cbWndExtra = 0;
 	WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
