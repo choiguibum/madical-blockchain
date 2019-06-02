@@ -2,23 +2,24 @@
 
 #pragma comment(lib, "libmysql.lib")
 #pragma comment(lib, "libcrypto-1_1.dll")
-#define DB_HOST "192.168.0.12"
-#define DB_USER "medi"
-#define DB_PASS "1234"
-#define DB_NAME "medi"
-#define HAVE_STRUCT_TIMESPEC
 
-MYSQL mysql;
-MYSQL_RES	*res;
-MYSQL_ROW	row;
+user myself;
+
+extern MYSQL mysql;
+extern MYSQL mysql2;
+extern MYSQL_RES	*res;
+extern MYSQL_ROW	row;
 
 int i;
 unsigned char digest[16];
-char md5[50] = { 0, };
+unsigned char digest2[SHA256_DIGEST_LENGTH];
+unsigned char digest3[SHA256_DIGEST_LENGTH];
+
+
 char tmp[10];
 
 
-TCHAR query[500];
+
 
 extern HINSTANCE g_hInst;
 extern int UH;
@@ -29,23 +30,20 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 	TCHAR pw1[50];
 	TCHAR name[50];
 	TCHAR birthday[50];
-	TCHAR pnum[50];
 	TCHAR test[5000];
+	TCHAR query[500];
+
 	int len;
 	int fields;
-	
-	
+	char md5[50] = { 0, };
+	char sha256[100] = { 0, };
+	char sha256_[100] = { 0, };
 	int sex=0;
 	static int check = 0;
 	
 	switch (iMessage) {
 	case WM_INITDIALOG:
-		mysql_init(&mysql);
-		if (!mysql_real_connect(&mysql, DB_HOST, DB_USER, DB_PASS, DB_NAME, 3306, NULL, 0)) {
-			wsprintf(test, TEXT("%s"), mysql_error(&mysql));
-			MessageBox(hWnd, test, NULL, MB_OK);
-			exit(0);
-		}
+		
 		return TRUE;
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
@@ -63,10 +61,9 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 				mysql_free_result(res);
 				return TRUE;
 			}
+		//	mysql_free_result(res);
 			res = mysql_store_result(&mysql);
 			if (res->row_count > 0) {
-				wsprintf(test, TEXT("%d"), res->row_count);
-				MessageBox(hWnd, test, NULL, MB_OK);
 				MessageBox(hWnd, TEXT("이미 존재하는 아이디입니다."), NULL, MB_OK);
 			}
 			else {
@@ -84,7 +81,7 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 			GetDlgItemText(hWnd, IDC_CPW2, pw1, 50);
 			GetDlgItemText(hWnd, IDC_CNAME, name, 50);
 			GetDlgItemText(hWnd, IDC_CDAY, birthday, 50);
-			GetDlgItemText(hWnd, IDC_CPNUM, pnum, 50);
+		
 			
 			if (IsDlgButtonChecked(hWnd, IDC_RS1) == BST_CHECKED) sex = 1;//1=남
 			else if(IsDlgButtonChecked(hWnd, IDC_RS2) == BST_CHECKED)sex = 2;
@@ -124,10 +121,7 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 				MessageBox(hWnd, TEXT("생년월일을  입력하세요."), NULL, MB_OK);
 				return TRUE;
 			}
-			if (lstrcmp(pnum, TEXT("")) == 0) {
-				MessageBox(hWnd, TEXT("전화번호를 입력하세요."), NULL, MB_OK);
-				return TRUE;
-			}
+			
 		
 			MD5_CTX context;
 			MD5_Init(&context);
@@ -138,12 +132,50 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 				wsprintf(tmp,TEXT("%02x"), digest[i]);
 				lstrcat(md5, tmp);
 			}
-		//	wsprintf(test, TEXT("%s"), md5);
-		//	MessageBox(hWnd, test, NULL, MB_OK);
-			wsprintf(query, TEXT("insert into user values('%s', '%s', '%s', '%s', '%d', '%s')"), (char*)name, (char*)id, (char*)md5, (char*)birthday, sex, (char *)pnum);
-			
+		
+			wsprintf(query, TEXT("insert into user values('%s', '%s', '%s', '%s', '%d')"), (char*)name, (char*)id, (char*)md5, (char*)birthday, sex);
 			if (mysql_query(&mysql, (char*)query)) {
 				wsprintf(test, TEXT("%s"), mysql_error(&mysql));
+				MessageBox(hWnd, test, NULL, MB_OK);
+				mysql_free_result(res);
+				return TRUE;
+			}
+		//	mysql_free_result(res);
+			wsprintf(query, TEXT("insert into info values('%s', '%s', '', '', '', '','')"), (char*)id, (char*)name);
+			if (mysql_query(&mysql, (char*)query)) {
+				wsprintf(test, TEXT("%s"), mysql_error(&mysql));
+				MessageBox(hWnd, test, NULL, MB_OK);
+				mysql_free_result(res);
+				return TRUE;
+			}
+			
+		//	mysql_free_result(res);
+			
+			SHA256_CTX ctx;
+			SHA256_Init(&ctx);
+			SHA256_Update(&ctx, (char*)pw, lstrlen(pw));
+			SHA256_Final(digest2, &ctx);
+		
+
+		//	char mdString[SHA256_DIGEST_LENGTH * 2 + 1];
+			for (i = 0; i < SHA256_DIGEST_LENGTH; i++) {
+				wsprintf(tmp, TEXT("%02x"), digest2[i]);
+				lstrcat(sha256, tmp);
+			}
+			lstrcpy(tmp, TEXT(""));
+			SHA256_CTX ctx2;
+			SHA256_Init(&ctx2);
+			SHA256_Update(&ctx2, (char*)id, lstrlen(id));
+			SHA256_Final(digest3, &ctx2);
+	//		char mdString2[SHA256_DIGEST_LENGTH * 2 + 1];
+			for (i = 0; i < SHA256_DIGEST_LENGTH; i++) {
+				wsprintf(tmp, TEXT("%02x"), digest3[i]);
+				lstrcat(sha256_, tmp);
+			}
+			MessageBox(hWnd, sha256, NULL, MB_OK);
+			wsprintf(query, TEXT("insert into pw values('%s', '%s')"), (char*)sha256_, (char*)sha256);
+			if (mysql_query(&mysql2, (char*)query)) {
+				wsprintf(test, TEXT("%s"), mysql_error(&mysql2));
 				MessageBox(hWnd, test, NULL, MB_OK);
 				mysql_free_result(res);
 				return TRUE;
@@ -151,8 +183,8 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 			else {
 				MessageBox(hWnd, TEXT("가입완료!!"), NULL, MB_OK);
 			}
-
-			mysql_close(&mysql);
+		//	mysql_free_result(res);
+			
 			EndDialog(hWnd, IDCREATE);
 			return TRUE;
 		}
@@ -164,17 +196,14 @@ BOOL CALLBACK LoginProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) 
 	TCHAR tid[50];
 	TCHAR tpw[50];
 	TCHAR test[123];
-		
+	TCHAR query[500];
+	char md5[50] = { 0, };
 	switch (iMessage) {
 	case WM_INITDIALOG:
-		mysql_init(&mysql);
-		if (!mysql_real_connect(&mysql, DB_HOST, DB_USER, DB_PASS, DB_NAME, 3306, NULL, 0)) {
-			wsprintf(test, TEXT("%s"), mysql_error(&mysql));
-			MessageBox(hWnd, test, NULL, MB_OK);
-			exit(0);
-		}
+
 		return TRUE;
 	case WM_COMMAND:
+		
 		switch (LOWORD(wParam)) {
 		case IDC_BLOGIN:
 			GetDlgItemText(hWnd, IDC_EID, tid, 50);
@@ -204,9 +233,10 @@ BOOL CALLBACK LoginProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) 
 					wsprintf(tmp, TEXT("%02x"), digest[i]);
 					lstrcat(md5, tmp);
 				}
+			//	MessageBox(hWnd, md5, NULL, MB_OK);
+				wsprintf(query, TEXT("select id,pw from user where id ='%s' and pw = '%s'"),(char *)tid,(char *)md5);
+			//	MessageBox(hWnd, query, NULL, MB_OK);
 
-				wsprintf(query, TEXT("select * from user where id ='%s' and pw = '%s'"),(char *)tid,(char *)md5);
-				
 				if (mysql_query(&mysql, (char*)query)) {
 					wsprintf(test, TEXT("%s"), mysql_error(&mysql));
 					MessageBox(hWnd, test, NULL, MB_OK);
@@ -214,13 +244,13 @@ BOOL CALLBACK LoginProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) 
 					return TRUE;
 				}
 				res = mysql_store_result(&mysql);
-				if (res->row_count == 0) {
+				if (res->row_count != 1) {
 					MessageBox(hWnd, TEXT("아이디 또는 비밀번호를 확인하세요."), NULL, MB_OK);
 					mysql_free_result(res);
 					return TRUE;
 				}
 				else if (res->row_count == 1) {
-					mysql_close(&mysql);
+					myself.setid(tid);
 					EndDialog(hWnd, IDC_BLOGIN);
 					return TRUE;
 				}
@@ -241,7 +271,6 @@ BOOL CALLBACK LoginProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) 
 					return TRUE;
 				}
 				else if (res->row_count == 1) {
-					mysql_close(&mysql);
 					EndDialog(hWnd, IDC_BLOGIN);
 					return TRUE;
 				}
@@ -252,7 +281,6 @@ BOOL CALLBACK LoginProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) 
 			DialogBox(g_hInst, MAKEINTRESOURCE(IDD_USERCREATE), HWND_DESKTOP, UserCreateProc);
 			return TRUE;
 		case IDC_BEXIT:
-			mysql_close(&mysql);
 			exit(0);
 			return TRUE;
 
