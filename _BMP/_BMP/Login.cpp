@@ -4,7 +4,6 @@
 #pragma comment(lib, "libcrypto-1_1.dll")
 
 user myself;
-
 extern MYSQL mysql;
 extern MYSQL mysql2;
 extern MYSQL_RES	*res;
@@ -250,7 +249,7 @@ BOOL CALLBACK LoginProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) 
 					return TRUE;
 				}
 				else if (res->row_count == 1) {
-					myself.setid(tid);
+					myself.setid(tid,tpw);
 					EndDialog(hWnd, IDC_BLOGIN);
 					return TRUE;
 				}

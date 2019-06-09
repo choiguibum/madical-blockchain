@@ -13,14 +13,16 @@ using namespace std;
 class user {
 public:
 	string ID;
+	string pw;
 	string name;
 	string kg;
 	string len;
 	string blood;
 	string eye1, eye2;
 	user() {};
-	void setid(string id){
+	void setid(string id, string pw){
 		this -> ID = id;
+		this->pw = pw;
 	}
 	void setinfo(string ID, string name, string kg, string len, string blood, string eye1, string eye2) {
 		this->ID = ID;

@@ -1,6 +1,15 @@
-﻿  Hospital.cpp
+﻿  User.cpp
 c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(17): warning C4005: '_WINSOCKAPI_': 매크로 재정의
   c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(17): note: 명령줄 인수: '_WINSOCKAPI_'의 이전 정의를 참조하십시오.
-c:\users\start\onedrive\바탕 화면\3조\_bmp\_bmp\hospital.cpp(272): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\start\onedrive\바탕 화면\3조\_bmp\_bmp\user.cpp(224): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\start\onedrive\바탕 화면\3조\_bmp\_bmp\user.cpp(265): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\start\onedrive\바탕 화면\3조\_bmp\_bmp\user.cpp(280): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\start\onedrive\바탕 화면\3조\_bmp\_bmp\user.cpp(304): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\start\onedrive\바탕 화면\3조\_bmp\_bmp\user.cpp(328): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\start\onedrive\바탕 화면\3조\_bmp\_bmp\user.cpp(352): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\start\onedrive\바탕 화면\3조\_bmp\_bmp\user.cpp(376): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\start\onedrive\바탕 화면\3조\_bmp\_bmp\user.cpp(86): warning C4101: 'SBPart' :참조되지 않은 지역 변수입니다.
+c:\users\start\onedrive\바탕 화면\3조\_bmp\_bmp\user.cpp(89): warning C4101: 'info' :참조되지 않은 지역 변수입니다.
+C:\Program Files (x86)\MySQL\MySQL Cluster 7.6\lib\libcrypto-1_1.dll : warning LNK4003: 라이브러리 형식이 잘못되었습니다. 라이브러리가 무시됩니다.
   _BMP.vcxproj -> C:\Users\start\OneDrive\바탕 화면\3조\_BMP\Debug\_BMP.exe
   _BMP.vcxproj -> C:\Users\start\OneDrive\바탕 화면\3조\_BMP\Debug\_BMP.pdb (Full PDB)
