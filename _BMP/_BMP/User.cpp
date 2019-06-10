@@ -275,6 +275,7 @@ LRESULT CALLBACK WndUserProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 		case TCN_SELCHANGE:
 			LI.mask = LVIF_TEXT;
 			num = 0;
+			SendMessage(uList2, LB_DELETESTRING, 0, (LPARAM)&LI);
 			SendMessage(uList1, LVM_DELETEALLITEMS, 0, (LPARAM)&LI);
 			if (TabCtrl_GetCurSel(uTab1) == 0) {
 				for (int i = 0; i < r.size(); i++) {
@@ -417,8 +418,8 @@ LRESULT CALLBACK WndUserProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		TextOut(hdc, 30, 100, TEXT("ÀÌ¸§"), 4);
-		TextOut(hdc, 30, 140, TEXT("Å°"), 2);
-		TextOut(hdc, 30, 180, TEXT("¸ö¹«°Ô"), 6);
+		TextOut(hdc, 30, 140, TEXT("¸ö¹«°Ô"), 6);
+		TextOut(hdc, 30, 180, TEXT("Å°"), 2);
 		TextOut(hdc, 30, 220, TEXT("Ç÷¾×Çü"), 6);
 		TextOut(hdc, 30, 260, TEXT("½Ã·Â(ÁÂ,¿ì)"), 11);
 		return 0;

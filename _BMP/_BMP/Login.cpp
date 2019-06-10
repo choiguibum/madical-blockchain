@@ -13,13 +13,7 @@ int i;
 unsigned char digest[16];
 unsigned char digest2[SHA256_DIGEST_LENGTH];
 unsigned char digest3[SHA256_DIGEST_LENGTH];
-
-
 char tmp[10];
-
-
-
-
 extern HINSTANCE g_hInst;
 extern int UH;
 BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {//회원가입
@@ -60,7 +54,6 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 				mysql_free_result(res);
 				return TRUE;
 			}
-		//	mysql_free_result(res);
 			res = mysql_store_result(&mysql);
 			if (res->row_count > 0) {
 				MessageBox(hWnd, TEXT("이미 존재하는 아이디입니다."), NULL, MB_OK);
@@ -121,7 +114,6 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 				return TRUE;
 			}
 			
-		
 			MD5_CTX context;
 			MD5_Init(&context);
 			MD5_Update(&context, (char*)pw, lstrlen(pw));
@@ -139,7 +131,6 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 				mysql_free_result(res);
 				return TRUE;
 			}
-		//	mysql_free_result(res);
 			wsprintf(query, TEXT("insert into info values('%s', '%s', '', '', '', '','')"), (char*)id, (char*)name);
 			if (mysql_query(&mysql, (char*)query)) {
 				wsprintf(test, TEXT("%s"), mysql_error(&mysql));
@@ -148,15 +139,12 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 				return TRUE;
 			}
 			
-		//	mysql_free_result(res);
 			
 			SHA256_CTX ctx;
 			SHA256_Init(&ctx);
 			SHA256_Update(&ctx, (char*)pw, lstrlen(pw));
 			SHA256_Final(digest2, &ctx);
 		
-
-		//	char mdString[SHA256_DIGEST_LENGTH * 2 + 1];
 			for (i = 0; i < SHA256_DIGEST_LENGTH; i++) {
 				wsprintf(tmp, TEXT("%02x"), digest2[i]);
 				lstrcat(sha256, tmp);
@@ -166,7 +154,6 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 			SHA256_Init(&ctx2);
 			SHA256_Update(&ctx2, (char*)id, lstrlen(id));
 			SHA256_Final(digest3, &ctx2);
-	//		char mdString2[SHA256_DIGEST_LENGTH * 2 + 1];
 			for (i = 0; i < SHA256_DIGEST_LENGTH; i++) {
 				wsprintf(tmp, TEXT("%02x"), digest3[i]);
 				lstrcat(sha256_, tmp);
@@ -181,9 +168,7 @@ BOOL CALLBACK UserCreateProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 			}
 			else {
 				MessageBox(hWnd, TEXT("가입완료!!"), NULL, MB_OK);
-			}
-		//	mysql_free_result(res);
-			
+			}	
 			EndDialog(hWnd, IDCREATE);
 			return TRUE;
 		}
@@ -232,10 +217,7 @@ BOOL CALLBACK LoginProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) 
 					wsprintf(tmp, TEXT("%02x"), digest[i]);
 					lstrcat(md5, tmp);
 				}
-			//	MessageBox(hWnd, md5, NULL, MB_OK);
 				wsprintf(query, TEXT("select id,pw from user where id ='%s' and pw = '%s'"),(char *)tid,(char *)md5);
-			//	MessageBox(hWnd, query, NULL, MB_OK);
-
 				if (mysql_query(&mysql, (char*)query)) {
 					wsprintf(test, TEXT("%s"), mysql_error(&mysql));
 					MessageBox(hWnd, test, NULL, MB_OK);
@@ -285,8 +267,6 @@ BOOL CALLBACK LoginProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) 
 
 		}
 		return FALSE;
-
-
 	}
 	return FALSE;
 }
