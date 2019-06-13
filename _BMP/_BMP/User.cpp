@@ -111,7 +111,7 @@ LRESULT CALLBACK WndUserProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 		ey2 = CreateWindow(TEXT("edit"), NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_READONLY, 172, 258, 48, 25, hWnd, (HMENU)105, g_hInst, NULL);
 		re = CreateWindow(TEXT("button"), TEXT("등록/수정"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 150, 330, 80, 25, hWnd, (HMENU)778, g_hInst, NULL);
 
-		
+	
 		mysql_free_result(res);
 		wsprintf(query, TEXT("select * from info where id = '%s'"), myself.ID.c_str());
 		if (mysql_query(&mysql, (const char*)query)) {
@@ -161,8 +161,6 @@ LRESULT CALLBACK WndUserProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 		SetWindowText(bl, myself.blood.c_str());
 		SetWindowText(ey1, myself.eye1.c_str());
 		SetWindowText(ey2, myself.eye2.c_str());
-
-
 		r.clear();
 		//md5
 		MD5_CTX context___;

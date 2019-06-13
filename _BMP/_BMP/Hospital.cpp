@@ -109,7 +109,6 @@ BOOL CALLBACK RecordProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			}
 
 
-			//////////////////////////////////////////////////////////////////////////////////
 			wsprintf(time, TEXT("%d-%d-%d-%d:%d"), st2.wYear, st2.wMonth, st2.wDay, st2.wHour, st2.wMinute);
 
 			wsprintf(query, TEXT("insert into record values(HEX(AES_ENCRYPT('%s','%s','AAAAAAAAAAAAAAAA')), '%s', '%s', '%s', '%s', '%s')"), recorde2, key2, dname, time, combo, recorde3, v.at(checknumber).id.c_str());
@@ -255,7 +254,6 @@ LRESULT CALLBACK WndHospitalProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM
 				res = mysql_store_result(&mysql);
 				row = mysql_fetch_row(res);
 				lstrcpy(md5k, row[0]);
-				//	MessageBox(hWnd, md5k, NULL, MB_OK);
 
 				SHA256_CTX ctx2_1;
 				SHA256_Init(&ctx2_1);
@@ -267,7 +265,6 @@ LRESULT CALLBACK WndHospitalProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM
 					lstrcat(sha256_, tmp_);
 				}
 
-				//	mysql_free_result(res);
 				wsprintf(query, TEXT("select pw from pw where id = '%s'"), sha256_);
 				if (mysql_query(&mysql2, (char*)query)) {
 					wsprintf(test, TEXT("%s"), mysql_error(&mysql2));
@@ -277,12 +274,10 @@ LRESULT CALLBACK WndHospitalProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM
 				}
 				res = mysql_store_result(&mysql2);
 				row = mysql_fetch_row(res);
-				lstrcpy(shak, row[0]);
-				//	MessageBox(hWnd, shak, NULL, MB_OK);
-				//	mysql_free_result(res);
+			
 				//md5+sha=md5;
 				lstrcat(md5k, shak);
-				//	MessageBox(hWnd, md5k, NULL, MB_OK);
+		
 				MD5_CTX context__;
 				MD5_Init(&context__);
 				MD5_Update(&context__, (char*)md5k, lstrlen(md5k));
@@ -293,7 +288,6 @@ LRESULT CALLBACK WndHospitalProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM
 					lstrcat(realkey, tmp_);
 				}
 
-				//	MessageBox(hWnd, realkey, NULL, MB_OK);
 				wsprintf(query, TEXT("select aes_decrypt(unhex(record),'%s','AAAAAAAAAAAAAAAA'),doctor,time,object,symptom,id from record where id = '%s'"), realkey, v.at(nia->iItem).id.c_str());
 				if (mysql_query(&mysql, (char*)query)) {
 					wsprintf(test, TEXT("%s"), mysql_error(&mysql));
@@ -306,11 +300,8 @@ LRESULT CALLBACK WndHospitalProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM
 
 				while (row = mysql_fetch_row(res))
 				{
-					//	MessageBox(hWnd, (char*)row[0], NULL, MB_OK);
 					Re.reset();
-					//	MessageBox(hWnd, TEXT("0"), NULL, MB_OK);
 					Re.record = row[0];
-					//	MessageBox(hWnd, TEXT("1"), NULL, MB_OK);
 					Re.dname = row[1];
 					Re.time = row[2];
 					Re.object = row[3];
@@ -319,7 +310,7 @@ LRESULT CALLBACK WndHospitalProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM
 
 					r.push_back(Re);
 				}
-				/////////////////////////////
+
 				LI.mask = LVIF_TEXT;
 
 				num = 0;
@@ -476,7 +467,6 @@ LRESULT CALLBACK WndHospitalProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM
 			}
 
 		}
-
 		return 0;
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
